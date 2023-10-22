@@ -34,7 +34,7 @@ git push
 
 ## Structure
 
-- The directory `RM2024-Internal-Core` contains the drivers and controller
+- The directory `RM2024-RDC-Core` contains the drivers and controller
 - Within `./Core/Inc/AppConfig.h`, you could enable/disable certain drivers and configure them.
 - Tasks are created in `./Core/Src/UserTask.cpp`.
 
