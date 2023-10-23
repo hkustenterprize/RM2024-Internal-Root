@@ -2,10 +2,10 @@
 
 ## Quick start guide
 
-This is the internal template for RM2024 internal competition. To use this template, clone the template in your terminal with:
+This is a forked version of the RM2024 template. To keep up with the latest version, clone the project in your terminal with:
 
 ``` bash
-git clone git@github.com:hkustenterprize/RM2024-Internal-Root.git
+git clone git@github.com:Hortaleza/RM2024-Internal-Root.git
 ```
 
 enter the directory with:
@@ -18,18 +18,6 @@ compile with Makefile
 
 ``` bash
 make -j
-```
-
-If you are first cloning this repository. You need to push this template into your team's own repository.
-
-```bash
-git remote set-url origin your-respository.git
-```
-
-And push it 
-
-```bash
-git push
 ```
 
 ## Structure
