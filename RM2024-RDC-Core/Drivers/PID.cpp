@@ -9,6 +9,7 @@ float PID::update(float target, float measurement, float dt)
     /*=====================================================================*/
     // Your implementation of the PID algorithm begins here
     /*=====================================================================*/
+    
     int index;
     if (measurement > maxRPM)
     {
@@ -52,11 +53,12 @@ float PID::update(float target, float measurement, float dt)
             integral += error * dt;
         }
     }
-
+    currentfilter = a * previousfilter + (1 - a) * (error-lastError);
+    previousfilter = currentfilter;
     error = target - measurement;  // Calculate the error
     pOut = Kp * error;             // Calculate the P term
     iOut = Ki * integral * index ;    // Calculate the I term
-    dOut = Kd * (error-lastError)/dt;   // Calculate the D term
+    dOut = Kd * currentfilter/dt;   // Calculate the D term
     output = pOut + iOut + dOut ;  // The output is the sum of all terms
     lastError = error;     // Update the last error
     /*=====================================================================*/

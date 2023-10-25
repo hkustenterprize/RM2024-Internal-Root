@@ -70,6 +70,10 @@ class PID
     float maxRPM;
     float minRPM;
 
+    float a = 0.8;
+    float previousfilter = 0;
+    float currentfilter = 0;
+
     /*===================*/
     // Your self-defined variables begin here
     /*===================*/
