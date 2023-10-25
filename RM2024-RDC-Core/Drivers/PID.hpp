@@ -63,8 +63,12 @@ class PID
     float pOut = 0;  // The P term output of the PID
     float iOut = 0;  // The I term output of the PID
     float dOut = 0;  // The D term output of the PID
+    float integral = 0;
 
     float output = 0;  // The current output of the PID
+
+    float maxRPM;
+    float minRPM;
 
     /*===================*/
     // Your self-defined variables begin here
