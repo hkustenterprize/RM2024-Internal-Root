@@ -42,6 +42,21 @@ class DJIMotor
    public:
     DJIMotor(const DJIMotor &)            = delete;
     DJIMotor &operator=(const DJIMotor &) = delete;
+    uint8_t txData[8]                     = {};
+    uint8_t rxData[8]                     = {};
+    CAN_TxHeaderTypeDef txHeader          = {
+        0x1FF, 0, CAN_ID_STD, CAN_RTR_DATA, 8, DISABLE};
+    CAN_FilterTypeDef filter = {0,
+                                0x205 << 5,
+                                0,
+                                0,
+                                CAN_FILTER_FIFO0,
+                                ENABLE,
+                                CAN_FILTERMODE_IDMASK,
+                                CAN_FILTERSCALE_16BIT,
+                                CAN_FILTER_ENABLE,
+                                0};
+    CAN_RxHeaderTypeDef rxheader;
 
     /**
      * @brief Get the raw encoder value
@@ -73,7 +88,7 @@ class DJIMotor
      *
      * @return int16_t
      */
-    virtual int16_t getRPM() const;
+    virtual int16_t getRPM();
 
     /**
      * @brief Get the actual output current(or voltage) of the motor
