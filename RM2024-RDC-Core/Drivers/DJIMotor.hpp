@@ -25,18 +25,6 @@
 
 namespace DJIMotor
 {
-
-/**
- * @brief A motor's handle. We do not require you to master the cpp class
- * syntax.
- * @brief However, some neccessary OOP thought should be shown in your code.
- * @brief For example, if you have multiple motors, which is going to happen in
- * RDC (You have at least 4 wheels to control)
- * @brief You are able to write a "template" module for all the abstract motors,
- * and instantiate them with different parameters
- * @brief Instead of copy and paste your codes for four times
- * @brief This is what we really appreiciate in our programming
- */
 class DJIMotor
 {
    public:

@@ -11,15 +11,12 @@ namespace DJIMotor
 // Initialize motor's controller instance
 DJIMotor motors[8];
 
-
 /**
  * @brief Get the raw encoder value
  *
  * @return uint16_t
  */
-uint16_t DJIMotor::getRawEncoder() const {
-
-}
+uint16_t DJIMotor::getRawEncoder() const { return rawEncoder; }
 
 /**
  * @brief Get the current position of the motor in radian
@@ -92,7 +89,7 @@ void DJIMotor::setCurrentLimit(uint16_t current) {
 
 }
 
-/**
+/**a
  * @brief Get the temperature of the motor
  *
  * @return uint8_t
@@ -120,14 +117,14 @@ bool DJIMotor::isConnected() const {
 }
 
 DJIMotor &getMotor(uint32_t canID) {
-    
+    // DJIMotor motor();
+    // return motor;
 }
 void sendMotorGroup(uint32_t canID) {}
 
 void init()
 {
-    // HAL_CAN_ConfigFilter(&hcan, &DJIMotor::filter);
-    // HAL_CAN_Start(&hcan);
+    
 }
 }  // namespace DJIMotor
 #endif
