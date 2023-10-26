@@ -13,7 +13,6 @@
 
 #pragma once
 #include "AppConfig.h"
-#include "can.h"
 
 #if USE_DJI_MOTOR
 
@@ -25,157 +24,34 @@
 
 namespace DJIMotor
 {
-class DJIMotor
+
+/**
+ * @brief A motor's handle. We do not require you to master the cpp class
+ * syntax.
+ * @brief However, some neccessary OOP thought should be shown in your code.
+ * @brief For example, if you have multiple motors, which is going to happen in
+ * RDC (You have at least 4 wheels to control)
+ * @brief You are able to write a "template" module for all the abstract motors,
+ * and instantiate them with different parameters
+ * @brief Instead of copy and paste your codes for four times
+ * @brief This is what we really appreiciate in our programming
+ */
+struct DJIMotor
 {
-   public:
-    DJIMotor(const DJIMotor &)            = delete;
-    DJIMotor &operator=(const DJIMotor &) = delete;
-    uint8_t txData[8]                     = {};
-    uint8_t rxData[8]                     = {};
-    CAN_TxHeaderTypeDef txHeader          = {
-        0x1FF, 0, CAN_ID_STD, CAN_RTR_DATA, 8, DISABLE};
-    CAN_FilterTypeDef filter = {0,
-                                0x205 << 5,
-                                0,
-                                0,
-                                CAN_FILTER_FIFO0,
-                                ENABLE,
-                                CAN_FILTERMODE_IDMASK,
-                                CAN_FILTERSCALE_16BIT,
-                                CAN_FILTER_ENABLE,
-                                0};
-    CAN_RxHeaderTypeDef rxheader;
-
+    uint16_t canID;  // You need to assign motor's can ID for different motor
+                     // instance
+    /*======================================================*/
     /**
-     * @brief Get the raw encoder value
-     *
-     * @return uint16_t
+     * @brief Your self-defined variables are defined here
+     * @note  Please refer to the GM6020, M3508 motor's user manual that we have
+     * released on the Google Drive
+     * @example:
+     * uint16_t encoder;
+     * uint16_t rpm;
+     * float orientation; //  get the accumulated orientation of the motor
+     * ......
      */
-    uint16_t getRawEncoder() const;
-
-    /**
-     * @brief Get the current position of the motor in radian
-     * @note  You may need to multiply the reduction ratio of the motor to get
-     * the actual position.
-     *
-     * @return float
-     */
-    virtual float getPosition() const;
-
-    /**
-     * @brief Set the Current Position object in radian
-     * @note This just set the current reference position of the motor, it does
-     * not change the actual position of the motor.
-     *
-     * @param position
-     */
-    virtual void setPosition(float position);
-
-    /**
-     * @brief Get the current speed of the motor in revolutions per minute (rpm)
-     *
-     * @return int16_t
-     */
-    virtual int16_t getRPM();
-
-    /**
-     * @brief Get the actual output current(or voltage) of the motor
-     *
-     * @return int16_t
-     */
-    virtual int16_t getActualCurrent() const;
-
-    /**
-     * @brief Get the set output current(or voltage) of the motor
-     *
-     * @return int16_t
-     */
-    int16_t getOutputCurrent() const;
-
-    /**
-     * @brief Set the output current(or voltage) of the motor
-     * @note  This function will limit the current(or voltage) according to the
-     * current(or voltage) limit of the motor. Please call sendMotorGroup() to
-     * send the command to the motor.
-     *
-     * @param current
-     */
-    virtual void setOutputCurrent(int32_t current);
-
-    /**
-     * @brief Set the Current(or voltage) Limit of the motor
-     * @note  To avoid overflow,
-     *          the maximum current limit for M3508 is 16384,
-     *          and the maximum voltage limit for GM6020 is 30000.
-     *
-     * The default limit is 10000.
-     *
-     * @param current
-     */
-    void setCurrentLimit(uint16_t current);
-
-    /**
-     * @brief Get the temperature of the motor
-     *
-     * @return uint8_t
-     */
-    uint8_t getTemperature() const;
-
-    /**
-     * @brief Get the Reveice Count of the motor, this can be used to estimate
-     * the receive frequency of the motor
-     *
-     * @return uint32_t
-     */
-    virtual uint32_t getReveiceCount() const;
-
-    /**
-     * @brief Check if the motor is connected
-     *
-     * @return true
-     * @return false
-     */
-    bool isConnected() const;
-
-    /**
-     * @brief The array of all the possible DJIMotors
-     */
-    static DJIMotor motors[11];
-
-    /**
-     * @attention   This function is used to decode the CAN message and update
-     * the motor data, you should not use this function.
-     */
-    static void decodeFeedback(CAN_HandleTypeDef *);
-
-   protected:
-    /**
-     * @attention   You should not call this constructor directly.
-     *              Instead, call DJIMotor::getMotor() to get the motor instance
-     * according to the motor CAN ID.
-     */
-    DJIMotor();
-
-    volatile uint16_t rawEncoder;
-    volatile uint16_t lastRawEncoder;
-    volatile float position;
-    volatile int16_t rpm;
-    volatile int16_t actualCurrent;
-    volatile int16_t setCurrent;
-    volatile uint16_t currentLimit;
-
-    volatile uint8_t temperature;
-
-    volatile int32_t rotaryCnt;
-    volatile int16_t positionOffset;
-
-    volatile uint32_t disconnectCnt;
-    volatile uint32_t receiveCnt;
-    volatile bool connected;
-
-    friend DJIMotor &getMotor(uint8_t id);
-    friend void motorUpdate(void *);
-    friend void sendMotorGroup(uint32_t group);
+    /*=======================================================*/
 };
 
 /**
@@ -183,28 +59,64 @@ class DJIMotor
  * @note  You might initialize the CAN Module here
  * @retval
  */
-
-DJIMotor &getMotor(uint32_t canID);
-
-/**
- * @brief   Send the command to the motor by group,
- *          call this function after you set the output current(or voltage) of
- * the motor.
- *
- * @param group     0 -> 0x200 , 1 -> 0x1ff, 2 -> 0x2ff
- */
-
-void sendMotorGroup(uint32_t canID);
-
-/**
- * @brief Initialize the DJIMotor driver
- *          Call this function before using this DJIMotor driver
- *
- * @note  If you do not want to use this DJIMotor driver provided by us, do not
- * call this function.
- */
-
 void init();
+
+/**
+ * @brief The encoder getter fucntion
+ * @param canID The unique CAN id of your motor
+ * @note  You need to return the current encoder feedback outward, because you
+ * need it in the PID module
+ * @retval motor's raw encoder
+ */
+float getEncoder(uint16_t canID);
+
+/**
+ * @brief The rpm getter function
+ * @param canID The unique CAN id of your motor
+ * @note You need to return the current rpm feedback outward, becacause you need
+ * it in the PID module
+ * @retval motor's rpm
+ */
+float getRPM(uint16_t canID);
+
+/**
+ * @brief Set the motor's output here
+ * @note  You might need to refer to the user manual to "clamp" the maximum or
+ * the minimun output
+ * @param output, canID The motor's output, unique can Id
+ * @note
+ * - For GM6020, it's the motor's voltage
+ * - For M3508, it's the motor's currnet
+ * @retval
+ */
+void setOutput(int16_t output);
+
+/**
+ * @brief Transmit the current set motor's output to the groups of motor based
+ * on the CAN header
+ * @param header The header of groups of motor
+ * @note For clear reference, please refer to the GM6020 and M3508 User manual
+ * @param
+ * @retval
+ */
+void transmit(uint16_t header);
+
+/*===========================================================*/
+/**
+ * @brief You can define your customized function here
+ * @note  It might not be necessary in your PA3, but it's might be beneficial
+for your RDC development progress
+ * @example
+ * float get(uint16_t canID);
+ *
+ * @note You could try to normalize the encoder's value and work out the
+accumulated position(orientation) of the motor
+ * float getPosition(uint16_t canID);
+ * ..... And more .....
+ *
+============================================================*/
+
+
 
 
 
