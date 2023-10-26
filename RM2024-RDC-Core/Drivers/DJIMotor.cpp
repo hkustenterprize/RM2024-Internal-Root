@@ -19,7 +19,9 @@ DJIMotor motors[8];
 /**
  * @todo
  */
-void init() {}
+void init() {
+    HAL_CAN_Start(&hcan);
+}
 
 /**
  * @todo
@@ -34,7 +36,9 @@ float getRPM(uint16_t canID) { return 0.0f; }
 /**
  * @todo
  */
-void setOutput(int16_t output) {}
+void setOutput(int16_t output) {
+    
+}
 
 /**
  * @todo

@@ -21,7 +21,7 @@
 #endif
 
 #include "main.h"
-
+#include "can.h"
 namespace DJIMotor
 {
 

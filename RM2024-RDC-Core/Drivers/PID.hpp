@@ -9,7 +9,7 @@
  */
 #pragma once
 #include "AppConfig.h"
-
+#include "can.h"
 float abs(float n);
 
 #if USE_PID
