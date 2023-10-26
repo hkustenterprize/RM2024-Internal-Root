@@ -29,8 +29,15 @@ float getEncoder(uint16_t canID) { return 0.0f; }
 /**
  * @todo
  */
-float getRPM(uint16_t canID) { return 0.0f; }
+float getRPM(uint16_t canID) { 
+uint32_t mailbox;
+    HAL_CAN_AddTxMessage(&hcan, &txHeader, txData, &mailbox);
+    HAL_CAN_GetRxMessage(&hcan, CAN_RX_FIFO0, &rxheader, rxData);
 
+    rpm = rxData[2]<<8 | rxData[3];
+
+    HAL_Delay(1);
+    return 0.0f; }
 /**
  * @todo
  */
