@@ -35,7 +35,10 @@ DJIMotor motors[8];
 /**
  * @todo
  */
-void init() {}
+void init() {
+    HAL_CAN_ConfigFilter(&hcan, &filter);;
+  HAL_CAN_Start(&hcan);
+}
 
 /**
  * @todo
