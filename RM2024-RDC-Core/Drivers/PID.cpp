@@ -1,4 +1,12 @@
 #include "PID.hpp"
+
+float abs(float n)
+{
+    if (n >= 0)
+        return n;
+    return -n;
+}
+
 #if USE_PID
 namespace Control
 {

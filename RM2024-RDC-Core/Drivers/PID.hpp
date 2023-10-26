@@ -10,6 +10,8 @@
 #pragma once
 #include "AppConfig.h"
 
+float abs(float n);
+
 #if USE_PID
 #include "FreeRTOS.h"
 #include "task.h"
