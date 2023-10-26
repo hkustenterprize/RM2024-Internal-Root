@@ -26,8 +26,8 @@ StaticTask_t xPIDTaskTCB;
  */
 void userTask(void *)
 {
-    DJIMotor::DJIMotor &motor = DJIMotor::getMotor();
-    motor.setCurrentLimit(30000);
+    // DJIMotor::DJIMotor &motor = DJIMotor::getMotor();
+    // motor.setCurrentLimit(30000);
     /* Your user layer codes begin here*/
     /*=================================================*/
     static Control::PID motorPID(0, 0, 0);
@@ -37,13 +37,13 @@ void userTask(void *)
     {
         /* Your user layer codes in loop begin here*/
         /*=================================================*/
-        currentRPM = motor.getRPM();
+        //currentRPM = motor.getRPM();
 
-        float output = motorPID.update(targetRPM,currentRPM,0.001f);
+        // float output = motorPID.update(targetRPM,currentRPM,0.001f);
 
-        motor.setOutput(output);
+        // motor.setOutput(output);
 
-        DJIMotor::transmit(1);  // Transmit the data to the motor, which
+        // DJIMotor::transmit(1);  // Transmit the data to the motor, which
                                       // has already been implemented by you
         /* Your user layer codes in loop end here*/
         /*=================================================*/
