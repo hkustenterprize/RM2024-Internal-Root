@@ -23,7 +23,7 @@ CAN_FilterTypeDef filter     = {0,
                                 CAN_FILTER_ENABLE,
                                 0};
 CAN_RxHeaderTypeDef rxheader;
-int16_t rpm;
+//int16_t rpm;
 
 // Initialize motor's controller instance
 DJIMotor motors[8];
@@ -36,7 +36,7 @@ DJIMotor motors[8];
  * @todo
  */
 void init() {
-    HAL_CAN_ConfigFilter(&hcan, &filter);;
+    HAL_CAN_ConfigFilter(&hcan, &filter);
   HAL_CAN_Start(&hcan);
 }
 
