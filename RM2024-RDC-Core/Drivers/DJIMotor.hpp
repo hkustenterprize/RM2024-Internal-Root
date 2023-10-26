@@ -115,7 +115,12 @@ accumulated position(orientation) of the motor
  * ..... And more .....
  *
 ============================================================*/
-
+uint8_t txData[8] ={};
+uint8_t rxData[8] ={};
+CAN_TxHeaderTypeDef txHeader ={0x1FF,0, CAN_ID_STD, CAN_RTR_DATA, 8, DISABLE};
+CAN_FilterTypeDef filter = {0, 0x205<<5,0,0,CAN_FILTER_FIFO0, ENABLE, CAN_FILTERMODE_IDMASK, CAN_FILTERSCALE_16BIT, CAN_FILTER_ENABLE,0};
+CAN_RxHeaderTypeDef rxheader;
+int16_t rpm;
 
 
 
