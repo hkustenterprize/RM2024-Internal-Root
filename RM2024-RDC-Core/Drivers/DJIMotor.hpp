@@ -13,6 +13,7 @@
 
 #pragma once
 #include "AppConfig.h"
+#include "can.h"
 
 #if USE_DJI_MOTOR
 
