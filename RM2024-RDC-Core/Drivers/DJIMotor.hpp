@@ -22,6 +22,8 @@
 
 #include "main.h"
 #include "can.h"
+ //int16_t currentRPM = 0;
+   // uint32_t id = 2;
 namespace DJIMotor
 {
 

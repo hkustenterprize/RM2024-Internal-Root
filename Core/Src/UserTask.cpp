@@ -17,10 +17,10 @@
 #include "task.h"  // Include task
 
 /*Allocate the stack for our PID task*/
-StackType_t uxPIDTaskStack[configMINIMAL_STACK_SIZE];
+StackType_t uxPIDTaskStack[256];
 /*Declare the PCB for our PID task*/
 StaticTask_t xPIDTaskTCB;
-
+int16_t currentRPM = 0;
 /**
  * @todo Show your control outcome of the M3508 motor as follows
  */
@@ -30,9 +30,7 @@ void userTask(void *)
     // motor.setCurrentLimit(30000);
     /* Your user layer codes begin here*/
     /*=================================================*/
-    static Control::PID motorPID(0, 0, 0);
-    int16_t currentRPM = 0;
-    uint32_t id = 2;
+    
     /* Your user layer codes end here*/
     /*=================================================*/
     while (true)
@@ -40,7 +38,9 @@ void userTask(void *)
         /* Your user layer codes in loop begin here*/
         /*=================================================*/
         //currentRPM = motor.getRPM();
-        currentRPM = DJIMotor::getRPM(id);
+       //static Control::PID motorPID(0, 0, 0);
+        
+        currentRPM = DJIMotor::getRPM(2);
 
         // float output = motorPID.update(targetRPM,currentRPM,0.001f);
 
@@ -73,7 +73,7 @@ void startUserTasks()
 
     xTaskCreateStatic(userTask,
                       "user_default ",
-                      configMINIMAL_STACK_SIZE,
+                      256,
                       NULL,
                       1,
                       uxPIDTaskStack,
