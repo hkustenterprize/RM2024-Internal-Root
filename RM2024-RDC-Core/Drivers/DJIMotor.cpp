@@ -33,9 +33,10 @@ float getEncoder(uint16_t canID) { return 0.0f; }
 /**
  * @todo
  */
-int getRPM(uint16_t canID) { 
+int getRPM(uint32_t canID) { 
     uint8_t rxData[8] ={};
-    CAN_FilterTypeDef filter = {0, 0x205<<5,0,0,CAN_FILTER_FIFO0, ENABLE, CAN_FILTERMODE_IDMASK, CAN_FILTERSCALE_16BIT, CAN_FILTER_ENABLE,0};
+    CAN_FilterTypeDef filter = {0, (0x200+canID)<<5,0,0,CAN_FILTER_FIFO0, ENABLE, CAN_FILTERMODE_IDMASK, CAN_FILTERSCALE_16BIT, CAN_FILTER_ENABLE,0};
+    
     CAN_RxHeaderTypeDef rxheader;
     HAL_CAN_ConfigFilter(&hcan, &filter);;
     
@@ -59,10 +60,12 @@ void setOutput(int16_t output) {
 /**
  * @todo
  */
-void transmit(uint16_t header) {}
+void transmit(uint16_t header) {
     uint32_t mailbox;
     uint8_t txData[8] ={};
     CAN_TxHeaderTypeDef txHeader ={0x1FF,0, CAN_ID_STD, CAN_RTR_DATA, 8, DISABLE};
     HAL_CAN_AddTxMessage(&hcan, &txHeader, txData, &mailbox);
-}  // namespace DJIMotor
+}  
+}
+// namespace DJIMotor
 #endif

@@ -31,6 +31,8 @@ void userTask(void *)
     /* Your user layer codes begin here*/
     /*=================================================*/
     static Control::PID motorPID(0, 0, 0);
+    int16_t currentRPM = 0;
+    uint32_t id = 2;
     /* Your user layer codes end here*/
     /*=================================================*/
     while (true)
@@ -38,7 +40,7 @@ void userTask(void *)
         /* Your user layer codes in loop begin here*/
         /*=================================================*/
         //currentRPM = motor.getRPM();
-        //currentRPM = DJIMotor::getRPM(MotorID);
+        currentRPM = DJIMotor::getRPM(id);
 
         // float output = motorPID.update(targetRPM,currentRPM,0.001f);
 

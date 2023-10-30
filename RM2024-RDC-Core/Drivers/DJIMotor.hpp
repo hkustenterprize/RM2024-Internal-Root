@@ -83,7 +83,7 @@ float getEncoder(uint16_t canID);
  * it in the PID module
  * @retval motor's rpm
  */
-float getRPM(uint16_t canID);
+int getRPM(uint32_t canID);
 
 /**
  * @brief Set the motor's output here
