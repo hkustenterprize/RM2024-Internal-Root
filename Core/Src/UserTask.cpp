@@ -21,6 +21,7 @@ StackType_t uxPIDTaskStack[256];
 /*Declare the PCB for our PID task*/
 StaticTask_t xPIDTaskTCB;
 int16_t currentRPM = 0;
+uint32_t id = 0;
 /**
  * @todo Show your control outcome of the M3508 motor as follows
  */
@@ -40,7 +41,7 @@ void userTask(void *)
         //currentRPM = motor.getRPM();
        //static Control::PID motorPID(0, 0, 0);
         
-        currentRPM = DJIMotor::getRPM(2);
+        currentRPM = DJIMotor::getRPM(id);
 
         // float output = motorPID.update(targetRPM,currentRPM,0.001f);
 
