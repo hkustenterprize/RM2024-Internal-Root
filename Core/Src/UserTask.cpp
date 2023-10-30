@@ -38,15 +38,13 @@ void userTask(void *)
         /* Your user layer codes in loop begin here*/
         /*=================================================*/
         //currentRPM = motor.getRPM();
+        //currentRPM = DJIMotor::getRPM(MotorID);
 
         // float output = motorPID.update(targetRPM,currentRPM,0.001f);
 
         // motor.setOutput(output);
 
-        // DJIMotor::transmit(1);  // Transmit the data to the motor, which
-                                      // has already been implemented by you
-        /* Your user layer codes in loop end here*/
-        /*=================================================*/
+        // DJIMotor::transmit(1);  // Transmit the data to the motor, whiche
         vTaskDelay(1);  // Delay and block the task for 1ms.
     }
 }

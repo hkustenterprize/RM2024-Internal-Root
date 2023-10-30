@@ -35,7 +35,11 @@ namespace DJIMotor
  * and instantiate them with different parameters
  * @brief Instead of copy and paste your codes for four times
  * @brief This is what we really appreiciate in our programming
+ * 
+ * 
  */
+
+ 
 struct DJIMotor
 {
     uint16_t canID;  // You need to assign motor's can ID for different motor
@@ -50,8 +54,10 @@ struct DJIMotor
      * uint16_t rpm;
      * float orientation; //  get the accumulated orientation of the motor
      * ......
+     * 
      */
     /*=======================================================*/
+    
 };
 
 /**
