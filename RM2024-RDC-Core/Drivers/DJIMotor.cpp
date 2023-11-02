@@ -35,8 +35,20 @@ float getEncoder(uint16_t canID) { return 0.0f; }
  */
 int getRPM(uint32_t canID) { 
     uint8_t rxData[8] ={};
-    CAN_FilterTypeDef filter = {0, (0x200+canID)<<5,0,0,CAN_FILTER_FIFO0, ENABLE, CAN_FILTERMODE_IDMASK, CAN_FILTERSCALE_16BIT, CAN_FILTER_ENABLE,0};
+    //CAN_FilterTypeDef filter = {0, (0x200+canID)<<5,0,0,CAN_FILTER_FIFO0, ENABLE, CAN_FILTERMODE_IDMASK, CAN_FILTERSCALE_16BIT, CAN_FILTER_ENABLE,0};
+    uint32_t filter_id = 0x200 + canID;
+    uint32_t filter_mask = 0x200 + canID;
     
+    CAN_FilterTypeDef filter = {((filter_id << 5)  | (filter_id >> (32 - 5))) & 0xFFFF, 
+                                (filter_id >> (11 - 3)) & 0xFFF8,
+                                ((filter_mask << 5)  | (filter_mask >> (32 - 5))) & 0xFFFF,
+                                (filter_mask >> (11 - 3)) & 0xFFF8,
+                                 CAN_FILTER_FIFO0, 
+                                ENABLE, 
+                                CAN_FILTERMODE_IDMASK,
+                                CAN_FILTERSCALE_16BIT,
+                                CAN_FILTER_ENABLE,
+                                0};
     CAN_RxHeaderTypeDef rxheader;
     HAL_CAN_ConfigFilter(&hcan, &filter);;
     
