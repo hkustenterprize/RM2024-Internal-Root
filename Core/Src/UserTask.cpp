@@ -17,7 +17,7 @@
 #include "task.h"  // Include task
 
 /*Allocate the stack for our PID task*/
-StackType_t uxPIDTaskStack[configMINIMAL_STACK_SIZE];
+StackType_t uxPIDTaskStack[256];
 /*Declare the PCB for our PID task*/
 StaticTask_t xPIDTaskTCB;
 
@@ -26,21 +26,38 @@ StaticTask_t xPIDTaskTCB;
  */
 void userTask(void *)
 {
+    // DJIMotor::DJIMotor &motor = DJIMotor::getMotor();
+    // motor.setCurrentLimit(30000);
     /* Your user layer codes begin here*/
     /*=================================================*/
-
+    static Control::PID pid1(10,2,0);
+    DJIMotor::Motor_measure_t Motor_measure[14];
+    DJIMotor::can_filter_init();
     /* Your user layer codes end here*/
     /*=================================================*/
     while (true)
     {
         /* Your user layer codes in loop begin here*/
         /*=================================================*/
+        //currentRPM = motor.getRPM();
+       //static Control::PID motorPID(0, 0, 0);
+        
+        
+		
+		//spd = 1000;
+		//Motor_measure[0].Output = PID_calc(&Motor_pid[0],Motor_measure[0].speed,spd);
+        Motor_measure[0].Output = pid1.update(1000,Motor_measure[0].speed,0.001f);
+		DJIMotor::Set_motor_cmd(&hcan,0x200,Motor_measure[0].Output,0,0,0);
+		
 
-        /* Your user layer codes in loop end here*/
-        /*=================================================*/
+        // float output = motorPID.update(targetRPM,currentRPM,0.001f);
 
-        vTaskDelay(1);  // Delay and block the task for 1ms.
-    }
+        // motor.setOutput(output);
+
+        // DJIMotor::transmit(1);  // Transmit the data to the motor, whiche
+        vTaskDelay(10);  // Delay and block the task for 1ms.
+    
+}
 }
 
 /**
@@ -60,12 +77,12 @@ void userTask(void *)
 */
 void startUserTasks()
 {
-    DJIMotor::init();  // Initalize the DJIMotor driver
+    //DJIMotor::init();  // Initalize the DJIMotor driver
     DR16::init();      // Intialize the DR16 driver
 
     xTaskCreateStatic(userTask,
                       "user_default ",
-                      configMINIMAL_STACK_SIZE,
+                      256,
                       NULL,
                       1,
                       uxPIDTaskStack,
